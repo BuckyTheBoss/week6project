@@ -18,7 +18,11 @@ def is_logged_in():
 def is_valid_customer_id(customer_id):
     '''If the given customer ID matches up to an actual customer record,
     return True. If not, return False.'''
-    pass
+    customers = Customer.get_all()
+    for cust in customers:
+        if cust.customer_id == customer_id:
+            return True
+    return False
 
 
 @app.route("/login/", methods=["POST", "GET"])
@@ -85,7 +89,24 @@ def edit_customer(customer_id):
        from the POST request.
     4. Save the customer object.
     5. Redirect to /customers/ page.'''
-    pass
+    if not is_logged_in():
+        return redirect(url_for('login'))
+    if not is_valid_customer_id(customer_id):
+        #flash message saying no cust exists
+        return redirect(url_for('show_customers'))
+    if request.method == 'POST':
+        auth = Auth()
+        current_user = auth.get_current_user()
+        current_user = current_user['user_id']
+        cust = Customer(request.form.get('first_name'), request.form.get('last_name'), request.form.get('phone'), request.form.get('email'),
+                 request.form.get('address1'), request.form.get('address2'), request.form.get('postal_code'), request.form.get('city'), request.form.get('country'), customer_id ,current_user)
+        cust.save()
+        return redirect(url_for('show_customers'))
+
+    customer = Customer.get(customer_id)
+    print(customer.email)
+    return render_template('customer/edit.html', customer=customer)
+
 
 
 @app.route("/customers/<int:customer_id>/")
