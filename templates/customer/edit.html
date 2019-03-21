@@ -1,6 +1,71 @@
 {% extends "base.html" %}
 {% block content %}
 
-{# Page to edit a customer #}
+	<div class="container-flex">
+		<div class="row">
+			<div class="col-2"></div>
+			<div class="col-8">
+				<h1>Edit Customer</h1>
+				<form method="post" class="mt-4">
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" for="first_name">First Name</label>
+						<div class="col-sm-6">
+						<input type="text" class="form-control" name="first_name" id="first_name" value="{{customer.first_name}}">
+					</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" for="last_name">Last Name</label>
+						<div class="col-sm-6">
+						<input type="text" class="form-control" name="last_name" id="last_name" value="{{customer.last_name}}">
+					</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" for="email">Email</label>
+						<div class="col-sm-6">
+						<input type="email" class="form-control" name="email" id="email" value="{{customer.email}}">
+					</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" for="phone">Phone Number</label>
+						<div class="col-sm-6">
+						<input type="text" class="form-control" name="phone" id="phone" value="{{customer.phone}}">
+					</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" for="address1">Address</label>
+						<div class="col-sm-6">
+						<input type="text" class="form-control" name="address1" id="address1" value="{{customer.address1}}">
+					</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" for="address2">Address2</label>
+						<div class="col-sm-6">
+						<input type="text" class="form-control" name="address2" id="address2" value="{{customer.address2}}">
+					</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" for="postal_code">Postal Code</label>
+						<div class="col-sm-6">
+						<input type="text" class="form-control" name="postal_code" id="postal_code" value="{{customer.postal_code}}">
+					</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" for="city">City</label>
+						<div class="col-sm-6">
+						<input type="text" class="form-control" name="city" id="city" value="{{customer.city}}">
+					</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" for="country">Country</label>
+						<div class="col-sm-6">
+						<input type="text" class="form-control" name="country" id="country" value="{{customer.country}}">
+					</div>
+					</div>
+					<button type="submit" class="btn btn-primary">Update</button>
+				</form>
+			</div>
+			<div class="col-2"></div>
+		</div>
+	</div>
 
 {% endblock %}

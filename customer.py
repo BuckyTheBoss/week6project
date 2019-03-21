@@ -25,9 +25,8 @@ class Customer:
             query = 'UPDATE customer SET first_name = ?, last_name = ?, phone = ?, email = ?, address1 = ?, address2 = ?, postal_code = ?, city = ?, country = ?, added_by = ? WHERE customer_id = ?'
             data = (self.first_name, self.last_name, self.phone, self.email,self.address1, self.address2, self.postal_code, self.city, self.country, self.added_by, self.customer_id)
         else:
-            query = 'INSERT INTO customer(first_name, last_name, phone, email, address1, address2, postal_code, city, country, added_by) VALUES(?,?,?,?,?,?,?,?,?,?)'
-            data = (self.first_name, self.last_name, self.phone, self.email, self.address1, self.address2, self.postal_code, self.city, self.country,
-                 self.added_by)
+            query = 'INSERT INTO customer(first_name, last_name, phone, email, address1, address2, postal_code, city, country) VALUES(?,?,?,?,?,?,?,?,?)'
+            data = (self.first_name, self.last_name, self.phone, self.email, self.address1, self.address2, self.postal_code, self.city, self.country)
         print(data)
         db.execute(query, data)
         db.commit()
@@ -46,7 +45,7 @@ class Customer:
     def get(customer_id):
         '''Get a single Customer object that corresponds to the customer id.
         If none found, return None.'''
-        query = 'select * from customer where customer_id = ?'
+        query = 'select first_name, last_name, phone, email, address1, address2, postal_code, city, country, customer_id, added_by from customer where customer_id = ?'
         db = Db()
         db.execute(query,(customer_id,))
         row = db.fetchone()
