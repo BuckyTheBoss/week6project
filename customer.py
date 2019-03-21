@@ -17,7 +17,7 @@ class Customer:
         self.customer_id = customer_id
         self.added_by = added_by
 
-    def save(self,user_id=None):
+    def save(self):
         '''If self has been populated by database data - UPDATE.
         Otherwise - INSERT a new record.'''
         db = Db()
@@ -27,9 +27,11 @@ class Customer:
         else:
             query = 'INSERT INTO customer(first_name, last_name, phone, email, address1, address2, postal_code, city, country, added_by) VALUES(?,?,?,?,?,?,?,?,?,?)'
             data = (self.first_name, self.last_name, self.phone, self.email, self.address1, self.address2, self.postal_code, self.city, self.country,
-                 user_id)
-
+                 self.added_by)
+        print(data)
         db.execute(query, data)
+        db.commit()
+
     def build_from_row(row):
         if row is None:
             return None
