@@ -12,9 +12,8 @@ app.secret_key = b'J.;0ajk>,m8jkLIn89hans*jkj90($'
 
 
 def is_logged_in():
-    '''If there is a user currently logged in, return True.
-    If not, return False.'''
-    pass
+    return 'username' in session
+
 
 def is_valid_customer_id(customer_id):
     '''If the given customer ID matches up to an actual customer record,
@@ -29,6 +28,7 @@ def login():
         password = request.form.get('password', None)
         auth = Auth()
         if auth.login(username, password):
+            session['username'] = username
             return redirect(url_for('show_customers'))
         else:
             flash('Could not log you in')
@@ -60,11 +60,17 @@ def add_customer():
     3. Create a new Customer object with all the above data.
     4. Save it to the database.
     5. Redirect to the /customers/ page.'''
-    pass
+    if not is_logged_in():
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        #create user in db
+        return redirect(url_for('show_customers'))
+    return render_template('customer/add.html')
+
 
 @app.route("/customers/<int:customer_id>/edit/", methods=['GET', 'POST'])
 def edit_customer(customer_id):
-    '''Check for logged in customer. Check for valid customer id.
+    '''Check for logged in user. Check for valid customer id.
     If GET, show the page to edit the given customer.
     If POST, do the following:
     1. Get data from the POST request.

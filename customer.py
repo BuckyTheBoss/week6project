@@ -17,12 +17,19 @@ class Customer:
         self.customer_id = customer_id
         self.added_by = added_by
 
-    def save(self):
+    def save(self,user_id=None):
         '''If self has been populated by database data - UPDATE.
         Otherwise - INSERT a new record.'''
-        pass
+        db = Db()
+        if self.customer_id != None:
+            query = 'UPDATE customer SET first_name = ?, last_name = ?, phone = ?, email = ?, address1 = ?, address2 = ?, postal_code = ?, city = ?, country = ?, added_by = ? WHERE customer_id = ?'
+            data = (self.first_name, self.last_name, self.phone, self.email,self.address1, self.address2, self.postal_code, self.city, self.country, self.added_by, self.customer_id)
+        else:
+            query = 'INSERT INTO customer(first_name, last_name, phone, email, address1, address2, postal_code, city, country, added_by) VALUES(?,?,?,?,?,?,?,?,?,?)'
+            data = (self.first_name, self.last_name, self.phone, self.email, self.address1, self.address2, self.postal_code, self.city, self.country,
+                 user_id)
 
-
+        db.execute(query, data)
     def build_from_row(row):
         if row is None:
             return None
@@ -37,10 +44,22 @@ class Customer:
     def get(customer_id):
         '''Get a single Customer object that corresponds to the customer id.
         If none found, return None.'''
-        pass
+        query = 'select * from customer where customer_id = ?'
+        db = Db()
+        db.execute(query,(customer_id,))
+        row = db.fetchone()
+        if row is None:
+            return None
+        return Customer.build_from_row(row)
 
     # Note: this is a CLASS function (no self!)
     def get_all():
         '''Get a list of Customer objects - one for each row in the 
         relevant table in the database.'''
-        pass
+        db = Db()
+        db.execute('select first_name, last_name, phone, email, address1, address2, postal_code, city, country, customer_id, added_by from customer')
+        rows = db.fetchall()
+        cust_obj_list = []
+        for row in rows:
+            cust_obj_list.append(Customer.build_from_row(row))
+        return cust_obj_list
