@@ -27,7 +27,6 @@ class Customer:
         else:
             query = 'INSERT INTO customer(first_name, last_name, phone, email, address1, address2, postal_code, city, country) VALUES(?,?,?,?,?,?,?,?,?)'
             data = (self.first_name, self.last_name, self.phone, self.email, self.address1, self.address2, self.postal_code, self.city, self.country)
-        print(data)
         db.execute(query, data)
         db.commit()
 

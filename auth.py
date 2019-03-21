@@ -51,7 +51,12 @@ class Auth:
         count = row[0]
         return count > 0
 
-    def get_by_user_id(self, user_id):
+    def get_username_by_user_id(user_id):
         '''Get a row containing user info for the given user id.
         Return None if there is no matching user.'''
-        pass
+        db = Db()
+        db.execute('select * from user where user_id = ?', (user_id,))
+        row = db.fetchone()
+        if row == None:
+            return None
+        return row['username']

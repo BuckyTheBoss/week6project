@@ -115,11 +115,19 @@ def show_customer(customer_id):
     Get customer object that matches the given customer id.
     Get a list of calls that are associated with the given customer id.
     Render the 'customer/show-one.html' template with the above data.'''
-    pass
+    if not is_valid_customer_id(customer_id):
+        #flash message saying no cust exists
+        return redirect(url_for('show_customers'))
+    if not is_logged_in():
+        #flash message saying log in
+        return redirect(url_for('login'))
+    customer = Customer.get(customer_id)
+    calls = Call.get_for_customer(customer_id)
+    return render_template('customer/show-one.html', customer=customer, calls=calls)
 
 
-@app.route("/calls/add/", methods=['POST'])
-def add_call():
+@app.route("/calls/add/<int:customer_id>", methods=['POST'])
+def add_call(customer_id):
     '''Check for logged in user. Check for valid customer id.
     Get customer object that matches the given customer id.
     Get the user_id of the currently logged-in user.
@@ -127,4 +135,16 @@ def add_call():
     Get the notes from the POST request.
     Use the above data to create a new Call object. Save it.
     Redirect to the /customers/<customer_id>/ page.'''
-    pass
+    if not is_valid_customer_id(customer_id):
+        #flash message saying no cust exists
+        return redirect(url_for('show_customers'))
+    if not is_logged_in():
+        #flash message saying log in
+        return redirect(url_for('login'))
+    auth = Auth()
+    current_user = auth.get_current_user()
+    current_user = current_user['user_id']
+    call_message = request.form.get('call_message', None)
+    call = Call(customer_id,current_user,call_message)
+    call.save()
+    return redirect(url_for('show_customer', customer_id=customer_id))
