@@ -63,7 +63,12 @@ def add_customer():
     if not is_logged_in():
         return redirect(url_for('login'))
     if request.method == 'POST':
-        #create user in db
+        auth = Auth()
+        current_user = auth.get_current_user()
+        current_user = current_user['user_id']
+        cust = Customer(request.form.get('first_name'), request.form.get('last_name'), request.form.get('phone'), request.form.get('email'),
+                 request.form.get('address1'), request.form.get('address2'), request.form.get('postal_code'), request.form.get('city'), request.form.get('country'), added_by=current_user)
+        cust.save()
         return redirect(url_for('show_customers'))
     return render_template('customer/add.html')
 
